@@ -57,12 +57,12 @@ fun MealInfoScreen(
     Box(modifier = Modifier) {
       Row(
           horizontalArrangement = Arrangement.SpaceBetween,
-          modifier = Modifier.fillMaxWidth().zIndex(3f).padding(horizontal = 8.dp),
+          modifier = Modifier.fillMaxWidth().zIndex(3f).padding(horizontal = 8.dp).align(Alignment.TopCenter),
       ) {
         SmallButton(onClick = onBack, icon = R.drawable.outline_arrow_back_24)
         SmallButton(onClick = {}, icon = R.drawable.outline_favorite_24)
       }
-      LazyColumn(modifier = Modifier.padding(it)) {
+      LazyColumn(modifier = Modifier.padding(it).align(Alignment.TopCenter)) {
         when (val uiState = state) {
           is UiState.Loading -> {
             item {
@@ -119,7 +119,7 @@ fun MealInfoScreen(
                     modifier = Modifier.fillMaxWidth().fillMaxHeight(0.5f).zIndex(1f),
                     model = meal.strMealThumb ?: { R.drawable.unavailable },
                     contentDescription = meal.strMeal ?: "Missing",
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.FillBounds,
                 )
               }
               Card(
