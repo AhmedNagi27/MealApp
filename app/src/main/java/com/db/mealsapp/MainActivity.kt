@@ -38,7 +38,8 @@ class MainActivity : ComponentActivity() {
               if (currentRoute?.startsWith(Routes.HOME) == true) pageTitle = "Explore"
               else if (currentRoute?.startsWith(Routes.SEARCH) == true) pageTitle = "Search"
               else if (currentRoute?.startsWith(Routes.FAVORITE) == true) pageTitle = "Favorites"
-              else if (currentRoute?.startsWith(Routes.MEAL_INFO) == true) pageTitle = "Meal Details"
+              else if (currentRoute?.startsWith(Routes.MEAL_INFO) == true)
+                  pageTitle = "Meal Details"
 
               TopBar(
                   title = pageTitle,
@@ -61,7 +62,7 @@ class MainActivity : ComponentActivity() {
                     }
                   },
                   onSearchClick = { navController.navigate(Routes.SEARCH) },
-                  onFavoriteClick = { /*navController.navigate(Routes.FAVORITE)*/ },
+                  onFavoriteClick = { navController.navigate(Routes.FAVORITE) },
               )
             },
         ) { innerPadding ->

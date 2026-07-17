@@ -1,4 +1,4 @@
-package com.db.mealsapp
+package com.db.mealsapp.presentation.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,8 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.db.mealsapp.date.model.remote.Meal
 import com.db.mealsapp.date.model.remote.MealResponse
-import com.db.mealsapp.date.repository.*
+import com.db.mealsapp.date.repository.MealRepo
+import com.db.mealsapp.date.repository.MealRepoImpl
 import com.db.mealsapp.util.UiState
 import kotlinx.coroutines.launch
 

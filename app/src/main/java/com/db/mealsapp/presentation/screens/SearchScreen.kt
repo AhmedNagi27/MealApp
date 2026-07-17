@@ -28,7 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.db.mealsapp.MealViewModel
+import com.db.mealsapp.presentation.viewmodels.MealViewModel
 import com.db.mealsapp.R
 import com.db.mealsapp.presentation.component.MealGridItem
 import com.db.mealsapp.util.UiState

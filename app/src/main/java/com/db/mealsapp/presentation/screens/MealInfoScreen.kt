@@ -30,12 +30,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
-import com.db.mealsapp.MealViewModel
 import com.db.mealsapp.R
+import com.db.mealsapp.date.model.local.MealDB
+import com.db.mealsapp.date.model.local.MealEntity
+import com.db.mealsapp.date.repository.DbRepoImpl
 import com.db.mealsapp.presentation.component.SmallButton
+import com.db.mealsapp.presentation.viewmodels.FavoriteViewModel
+import com.db.mealsapp.presentation.viewmodels.MealViewModel
 import com.db.mealsapp.util.UiState
 
 @Composable
@@ -44,23 +49,51 @@ fun MealInfoScreen(
     vm: MealViewModel,
     id: String,
     onBack: () -> Unit,
+    favoriteVm: FavoriteViewModel =
+        FavoriteViewModel(DbRepoImpl(MealDB.getDatabase(context = LocalContext.current).mealDao())),
 ) {
 
   val state by vm.mealInfo.collectAsState(UiState.Loading)
+
   LaunchedEffect(key1 = id) { vm.getMealInfoById(id) }
 
   var selectedTab by remember { mutableStateOf("Ingredients") }
 
+  val isFavorite by favoriteVm.isFavoriteMeal(id).collectAsState(initial = false)
   Scaffold(
       modifier = modifier,
   ) {
     Box(modifier = Modifier) {
       Row(
           horizontalArrangement = Arrangement.SpaceBetween,
-          modifier = Modifier.fillMaxWidth().zIndex(3f).padding(horizontal = 8.dp).align(Alignment.TopCenter),
+          modifier =
+              Modifier.fillMaxWidth()
+                  .zIndex(3f)
+                  .padding(horizontal = 8.dp)
+                  .align(Alignment.TopCenter),
       ) {
         SmallButton(onClick = onBack, icon = R.drawable.outline_arrow_back_24)
-        SmallButton(onClick = {}, icon = R.drawable.outline_favorite_24)
+        SmallButton(
+            onClick = {
+              if (state is UiState.Success) {
+                val meal = (state as UiState.Success).data
+                if (isFavorite) {
+                  favoriteVm.deleteMeal(meal.idMeal!!)
+                } else {
+                  favoriteVm.insertMeal(
+                      MealEntity(
+                          mealId = meal.idMeal!!,
+                          strMeal = meal.strMeal!!,
+                          strMealThumb = meal.strMealThumb,
+                          isFavorite = true,
+                      )
+                  )
+                }
+              }
+            },
+            icon =
+                if (isFavorite) R.drawable.baseline_favorite_24 else R.drawable.outline_favorite_24,
+        )
       }
       LazyColumn(modifier = Modifier.padding(it).align(Alignment.TopCenter)) {
         when (val uiState = state) {
@@ -111,6 +144,7 @@ fun MealInfoScreen(
                     meal.strIngredient19 to meal.strMeasure19,
                     meal.strIngredient20 to meal.strMeasure20,
                 )
+
             item {
               Box(
                   modifier = Modifier.fillMaxSize(),
@@ -137,16 +171,18 @@ fun MealInfoScreen(
                       horizontalArrangement = Arrangement.SpaceBetween,
                       modifier = Modifier.fillMaxWidth().padding(8.dp),
                   ) {
-                    if(!meal.strCategory.isNullOrEmpty()) Text(
-                        text = "Category: ${meal.strCategory}",
-                        modifier = Modifier,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                    if(!meal.strArea.isNullOrEmpty()) Text(
-                        text = " ${meal.strArea + " " + "Food"}",
-                        modifier = Modifier,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
+                    if (!meal.strCategory.isNullOrEmpty())
+                        Text(
+                            text = "Category: ${meal.strCategory}",
+                            modifier = Modifier,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    if (!meal.strArea.isNullOrEmpty())
+                        Text(
+                            text = " ${meal.strArea + " " + "Food"}",
+                            modifier = Modifier,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
                   }
                   Card(
                       modifier = Modifier.fillMaxWidth().padding(8.dp),
