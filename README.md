@@ -25,4 +25,4 @@ A modern, responsive recipe explorer for Android that allows users to discover d
 3. Build and run the app on an emulator or physical device.
 
 ---
-*Built with ❤️ using TheMealDB API.*
+*Built using TheMealDB API.*
