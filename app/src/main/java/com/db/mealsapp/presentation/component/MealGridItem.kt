@@ -25,13 +25,10 @@ import com.db.mealsapp.date.model.remote.Meal
 
 @Composable
 fun MealGridItem(modifier: Modifier = Modifier, meal: Meal, onClick: (String) -> Unit) {
-  Column(modifier = Modifier
-      .fillMaxWidth()
-      .clickable(onClick = { onClick(meal.idMeal!!) })) {
+  Column(modifier = Modifier.fillMaxWidth().clickable(onClick = { onClick(meal.idMeal!!) })) {
     Box(
         modifier =
-            Modifier
-                .fillMaxWidth()
+            Modifier.fillMaxWidth()
                 .aspectRatio(0.67f)
                 .clip(RoundedCornerShape(8.dp))
                 .background(Color(0xFF1E1E1E)),
